@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorChanger : MonoBehaviour
+public class SpriteAttributeChanger : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
 
@@ -20,10 +20,21 @@ public class ColorChanger : MonoBehaviour
 
     IEnumerator ChangeColor(Color color, float time)
     {
-        Color startColor = spriteRenderer.color;
         spriteRenderer.color = color;
         yield return new WaitForSeconds(time);
         spriteRenderer.color = Color.white; // startColor;
+    }
+
+    public void SquashSprite(float time)
+    {
+        StartCoroutine(Squash(time));
+    }
+
+    IEnumerator Squash(float time)
+    {
+        gameObject.transform.localScale = new Vector3(1, .5f, 1);
+        yield return new WaitForSeconds(time);
+        gameObject.transform.localScale = new Vector3(1, 1, 1);
     }
 
 }

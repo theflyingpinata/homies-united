@@ -13,7 +13,7 @@ public class Stadium : MonoBehaviour
     // Returns a character on the other side of the character given. Returns null if character given isn't on either side
     public Character GetCharacterOtherSide(Character currentCharacter)
     {
-        if (currentCharacter.UniqueID == character1_Side1.UniqueID || currentCharacter.UniqueID == character2_Side1.UniqueID)
+        if (currentCharacter.ID == character1_Side1.ID || currentCharacter.ID == character2_Side1.ID)
         {
             if(Random.Range(0,2) == 0)
             {
@@ -24,7 +24,7 @@ public class Stadium : MonoBehaviour
                 return character2_Side2;
             }
         }
-        else if (currentCharacter.UniqueID == character1_Side2.UniqueID || currentCharacter.UniqueID == character2_Side2.UniqueID)
+        else if (currentCharacter.ID == character1_Side2.ID || currentCharacter.ID == character2_Side2.ID)
         {
             if (Random.Range(0, 2) == 0)
             {

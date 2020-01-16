@@ -390,6 +390,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character 2-1
       objectReference: {fileID: 0}
+    - target: {fileID: 2325204272237300686, guid: eb6ea53ab27789b4683d001f726b049e,
+        type: 3}
+      propertyPath: m_FlipY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2325204272237300686, guid: eb6ea53ab27789b4683d001f726b049e,
+        type: 3}
+      propertyPath: m_DrawMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2325204272237300686, guid: eb6ea53ab27789b4683d001f726b049e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 2325204272237300689, guid: eb6ea53ab27789b4683d001f726b049e,
         type: 3}
       propertyPath: theCamera
@@ -398,7 +413,7 @@ PrefabInstance:
     - target: {fileID: 8460743687671179645, guid: eb6ea53ab27789b4683d001f726b049e,
         type: 3}
       propertyPath: stats.attacksPerSecond
-      value: 0.01
+      value: 0.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb6ea53ab27789b4683d001f726b049e, type: 3}
@@ -477,7 +492,7 @@ PrefabInstance:
     - target: {fileID: 8460743687671179645, guid: eb6ea53ab27789b4683d001f726b049e,
         type: 3}
       propertyPath: stats.attacksPerSecond
-      value: 0.01
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb6ea53ab27789b4683d001f726b049e, type: 3}
@@ -556,7 +571,7 @@ PrefabInstance:
     - target: {fileID: 8460743687671179645, guid: eb6ea53ab27789b4683d001f726b049e,
         type: 3}
       propertyPath: stats.attacksPerSecond
-      value: 0.01
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb6ea53ab27789b4683d001f726b049e, type: 3}
@@ -715,5 +730,16 @@ PrefabInstance:
       propertyPath: theCamera
       value: 
       objectReference: {fileID: 963194227}
+    - target: {fileID: 8460743687671179645, guid: eb6ea53ab27789b4683d001f726b049e,
+        type: 3}
+      propertyPath: stats.attackWinddown
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8460743687671179645, guid: eb6ea53ab27789b4683d001f726b049e,
+        type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 11400000, guid: b868ce1abbe26404f85a826801eec538,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb6ea53ab27789b4683d001f726b049e, type: 3}
