@@ -8,6 +8,7 @@ using System;
 public class BaseCharacterStats : ScriptableObject
 {
     public string CharacterName;
+
     public float AD;
 
     public float AttackWindup;
@@ -16,4 +17,8 @@ public class BaseCharacterStats : ScriptableObject
     public float AS;
 
     public float MaxHealth;
+
+    public float StartingMana;
+    public float MaxMana;
+    public float ManaGain;
 }

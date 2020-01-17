@@ -23,6 +23,9 @@ public class RuntimeCharacterStats
 
     // Health
     [Header("Health")]
+    public float maxHealth;
+    public float flatHealth;
+    public float percentHealth;
     [SerializeField]
     private float currentHealth;
 
@@ -49,6 +52,9 @@ public class RuntimeCharacterStats
         }
     }
 
+    // Name info
+    public string characterName;
+
     public RuntimeCharacterStats(BaseCharacterStats baseStats)
     {
         this.baseStats = baseStats;
@@ -69,13 +75,17 @@ public class RuntimeCharacterStats
         CalcAD();
 
         // Health
-        CurrentHealth = baseStats.MaxHealth;
+        CalcMaxHealth();
+        CurrentHealth = maxHealth;
+
+        // Name
+        characterName = baseStats.CharacterName;
     }
 
     // Calculates the attack speed and time between attacks
     public void CalcAS()
     {
-        currentAS = baseStats.AS  + (baseStats.AS * (percentAS / 100f));
+        currentAS = baseStats.AS  * (1f + (percentAS / 100f));
         timeBetweenAttacks = 1 / currentAS ;
     }
 
@@ -83,6 +93,14 @@ public class RuntimeCharacterStats
     // Calculates the attack damage, factoring in flat and percent bonuss
     public void CalcAD()
     {
-        currentAD = baseStats.AD + flatAD + (baseStats.AD * (percentAD / 100f));
+        currentAD = baseStats.AD + flatAD * (1f + (percentAD / 100f));
     }
+
+    // Calculates the max health, factoring in flat and percent bonuss
+    public void CalcMaxHealth()
+    {
+        maxHealth = baseStats.MaxHealth + flatHealth * (1f + (percentHealth / 100f));
+    }
+
+
 }

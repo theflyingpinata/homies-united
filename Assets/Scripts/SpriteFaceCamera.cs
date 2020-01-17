@@ -13,8 +13,10 @@ public class SpriteFaceCamera : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        transform.rotation = Quaternion.Euler(0, theCamera.transform.rotation.eulerAngles.y, 0);
+        transform.LookAt(new Vector3(theCamera.transform.position.x, 0, theCamera.transform.position.z));
+        //transform.LookAt(Vector3.Lerp(new Vector3(theCamera.transform.position.x, 0, theCamera.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z), .2f), Vector3.up);
+        //transform.rotation = Quaternion.Euler(0, theCamera.transform.rotation.eulerAngles.y, 0);
     }
 }

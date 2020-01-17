@@ -152,11 +152,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecd9c8ea3145f1146a21a66012b35a22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UniqueID: 0
+  ID: 0
   baseStats: {fileID: 11400000, guid: b868ce1abbe26404f85a826801eec538, type: 2}
   runtimeStats:
     baseStats: {fileID: 0}
+    percentAS: 0
+    currentAS: 0
     timeBetweenAttacks: 0
+    flatAD: 0
+    percentAD: 0
+    currentAD: 0
     currentHealth: 0
   spriteAttributeChanger: {fileID: 0}
   stadium: {fileID: 0}
