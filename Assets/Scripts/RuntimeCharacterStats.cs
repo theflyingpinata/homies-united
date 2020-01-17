@@ -11,46 +11,20 @@ public class RuntimeCharacterStats
 
     // Attack Speed
     [Header("Attack Speed")]
-    public float percentAS;
-    public float currentAS;
-    public float timeBetweenAttacks;
+    public AttackSpeed AS;
 
     // Attack Damage
     [Header("Attack Damage")]
-    public float flatAD;
-    public float percentAD;
-    public float currentAD;
+    public Stat AD;
 
     // Health
     [Header("Health")]
-    public float maxHealth;
-    public float flatHealth;
-    public float percentHealth;
-    [SerializeField]
-    private float currentHealth;
+    public Health Health;
 
-    public float CurrentHealth
-    {
-        get
-        {
-            return currentHealth;
-        }
-        set
-        {
-            if (value < 0)
-            {
-                currentHealth = 0;
-            }
-            else if (value > baseStats.MaxHealth)
-            {
-                currentHealth = baseStats.MaxHealth;
-            }
-            else
-            {
-                currentHealth = value;
-            }
-        }
-    }
+    // Mana
+    [Header("Mana")]
+    public Mana Mana;
+    public Stat ManaGain;
 
     // Name info
     public string characterName;
@@ -58,30 +32,37 @@ public class RuntimeCharacterStats
     public RuntimeCharacterStats(BaseCharacterStats baseStats)
     {
         this.baseStats = baseStats;
-    }
-    public void Start()
-    {
         SetupValues();
     }
+
     public void SetupValues()
     {
         // Attack Speed
-        percentAS = 0;
-        CalcAS();
+        AS = new AttackSpeed(baseStats.AS);
 
         // Attack Damage
-        flatAD = 0;
-        percentAD = 0;
-        CalcAD();
+        AD = new Stat(baseStats.AD);
 
         // Health
-        CalcMaxHealth();
-        CurrentHealth = maxHealth;
+        Health = new Health(baseStats.MaxHealth);
+
+        // Mana
+        Mana = new Mana(baseStats.MaxMana, baseStats.StartingMana.Value);
+        ManaGain = new Stat(baseStats.ManaGain);
 
         // Name
         characterName = baseStats.CharacterName;
     }
 
+    public void UpdateStats()
+    {
+        AS.CalcActual();
+        AD.CalcActual();
+        Mana.CalcActual();
+        Health.CalcActual();
+
+    }
+    /*
     // Calculates the attack speed and time between attacks
     public void CalcAS()
     {
@@ -101,6 +82,6 @@ public class RuntimeCharacterStats
     {
         maxHealth = baseStats.MaxHealth + flatHealth * (1f + (percentHealth / 100f));
     }
-
+    */
 
 }

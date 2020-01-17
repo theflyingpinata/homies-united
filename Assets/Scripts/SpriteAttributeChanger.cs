@@ -22,7 +22,8 @@ public class SpriteAttributeChanger : MonoBehaviour
     {
         spriteRenderer.color = color;
         yield return new WaitForSeconds(time);
-        spriteRenderer.color = Color.white; // startColor;
+        if(spriteRenderer.color == color)
+            spriteRenderer.color = Color.white; // startColor;
     }
 
     public void SquashSprite(float time)
@@ -35,6 +36,11 @@ public class SpriteAttributeChanger : MonoBehaviour
         gameObject.transform.localScale = new Vector3(1, .5f, 1);
         yield return new WaitForSeconds(time);
         gameObject.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    public void ChangeSprites(Sprite sprite)
+    {
+        spriteRenderer.sprite = sprite;
     }
 
 }

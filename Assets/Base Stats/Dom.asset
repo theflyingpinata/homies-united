@@ -13,8 +13,20 @@ MonoBehaviour:
   m_Name: Dom
   m_EditorClassIdentifier: 
   CharacterName: Dom
-  AD: 1
+  sprite: {fileID: 21300000, guid: be4b18ad3b80a29459efc97140789623, type: 3}
+  AD:
+    Value: 1
   AttackWindup: 0.25
   AttackWinddown: 0.5
-  AS: 0.5
-  MaxHealth: 20
+  AbilityWindup: 1
+  AbilityWinddown: 1
+  AS:
+    Value: 0.5
+  MaxHealth:
+    Value: 20
+  StartingMana:
+    Value: 15
+  MaxMana:
+    Value: 25
+  ManaGain:
+    Value: 5

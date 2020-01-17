@@ -7,18 +7,23 @@ using System;
 [CreateAssetMenu(menuName ="Base Stats")]
 public class BaseCharacterStats : ScriptableObject
 {
+    // Info 
     public string CharacterName;
+    // Temnp
+    public Sprite sprite;
 
-    public float AD;
+    public BaseStat AD;
 
     public float AttackWindup;
     public float AttackWinddown;
+    public float AbilityWindup;
+    public float AbilityWinddown;
 
-    public float AS;
+    public BaseStat AS;
 
-    public float MaxHealth;
+    public BaseStat MaxHealth;
 
-    public float StartingMana;
-    public float MaxMana;
-    public float ManaGain;
+    public BaseStat StartingMana;
+    public BaseStat MaxMana;
+    public BaseStat ManaGain;
 }

@@ -7,6 +7,7 @@ using TMPro;
 public class UICharacterBattleStatus : MonoBehaviour
 {
     // Stats
+    public Character character;
     public RuntimeCharacterStats runtimeCharacterStats;
 
 
@@ -14,20 +15,32 @@ public class UICharacterBattleStatus : MonoBehaviour
     public TextMeshProUGUI text;
     public Image imagePortrait;
     public Slider sliderHealth;
+    public Slider sliderMana;
     public Slider sliderAS;
 
     // Start is called before the first frame update
     void Start()
     {
-        Setup();
+        runtimeCharacterStats = character.runtimeStats;
+        //Setup();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(runtimeCharacterStats != null)
+        if(runtimeCharacterStats != null && runtimeCharacterStats.characterName != "")
         {
+            // test
+            /*
+            runtimeCharacterStats.UpdateStats();
+            Setup();
+            */
             UpdateUI();
+        }
+        else
+        {
+            runtimeCharacterStats = character.runtimeStats;
+            Setup();
         }
     }
 
@@ -35,13 +48,19 @@ public class UICharacterBattleStatus : MonoBehaviour
     public void Setup()
     {
         text.text = runtimeCharacterStats.characterName;
+        imagePortrait.sprite = runtimeCharacterStats.baseStats.sprite;
 
         // Sliders
-        sliderHealth.maxValue = runtimeCharacterStats.maxHealth;
+        sliderHealth.maxValue = runtimeCharacterStats.Health.Actual;
+        sliderMana.maxValue = runtimeCharacterStats.Mana.Actual;
+        sliderAS.maxValue = runtimeCharacterStats.AS.Interval;
+
 
     }
     public void UpdateUI()
     {
-        sliderHealth.value = runtimeCharacterStats.CurrentHealth;
+        sliderHealth.value = runtimeCharacterStats.Health.Current;
+        sliderMana.value = runtimeCharacterStats.Mana.Current;
+        sliderAS.value = character.currentAttackCharge;
     }
 }
