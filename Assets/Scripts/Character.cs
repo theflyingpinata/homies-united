@@ -10,6 +10,7 @@ public class Character : MonoBehaviour
     public RuntimeCharacterStats runtimeStats;
 
     public SpriteAttributeChanger spriteAttributeChanger;
+    public Animator animator;
     // Character Events - called during attacks and when hit
     //public CharacterEvents characterEvents;
 
@@ -31,6 +32,9 @@ public class Character : MonoBehaviour
 
         spriteAttributeChanger = gameObject.GetComponent<SpriteAttributeChanger>();
         spriteAttributeChanger.ChangeSprites(baseStats.sprite);
+
+        animator = gameObject.GetComponent<Animator>();
+        animator.runtimeAnimatorController = baseStats.animator;
 
         runtimeStats = new RuntimeCharacterStats(baseStats);
         runtimeStats.SetupValues();
@@ -147,7 +151,7 @@ public class Character : MonoBehaviour
     public void DoAttack(AttackEventArgs attackEventArgs)
     {
         attackEventArgs.Damage = attackEventArgs.User.baseStats.AD.Value;
-        attackEventArgs.Target.HitEvent(attackEventArgs);
+        attackEventArgs.Target.RaiseHitEvent(attackEventArgs);
        
     }
 
@@ -155,6 +159,10 @@ public class Character : MonoBehaviour
     public void DoAbility(AttackEventArgs attackEventArgs)
     {
         //TODO
+        if(baseStats.Ability.active)
+        {
+            baseStats.Ability.CastAbility(attackEventArgs);
+        }
         // Call  the ability that is held in another class
     }
 
@@ -184,6 +192,7 @@ public class Character : MonoBehaviour
     // Starts up the attack wind up
     public void StartAttackWindupCoroutine(AttackEventArgs attackEventArgs)
     {
+        animator.SetTrigger("Attack");
         //Debug.Log("StartAttackCoroutine");
         StartCoroutine(DelayEvent(AttackEndWindupEvent, attackEventArgs, baseStats.AttackWindup));
         StartCoroutine(DelayEvent(AttackEvent, attackEventArgs, baseStats.AttackWindup));
@@ -252,6 +261,11 @@ public class Character : MonoBehaviour
 
     // This is bandaid work around for Events that will through an exception when nothing is subscribed to them
     public void StopException(AttackEventArgs attackEventArgs) { }
+
+    public void RaiseHitEvent(AttackEventArgs attackEventArgs)
+    {
+        HitEvent(attackEventArgs);
+    }
 
     public void PeePeePooPoo(AttackEventArgs eh)
     {

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterName: Alex
   sprite: {fileID: 21300000, guid: 588bef8de62cf864bb9271ce0cc0ea23, type: 3}
+  animator: {fileID: 9100000, guid: 1f8c8e6a8ddd8ab42a4a6dbbdae6d622, type: 2}
+  Ability: {fileID: 11400000, guid: 1ea883fd3f01ef249b8d0fb8f03eae05, type: 2}
   AD:
     Value: 0.25
   AttackWindup: 0.4

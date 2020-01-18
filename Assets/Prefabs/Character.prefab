@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 2325204272237300689}
   - component: {fileID: 3183715731154072950}
   - component: {fileID: 8460743687671179645}
+  - component: {fileID: 1284411238107365896}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -156,14 +157,60 @@ MonoBehaviour:
   baseStats: {fileID: 11400000, guid: b868ce1abbe26404f85a826801eec538, type: 2}
   runtimeStats:
     baseStats: {fileID: 0}
-    percentAS: 0
-    currentAS: 0
-    timeBetweenAttacks: 0
-    flatAD: 0
-    percentAD: 0
-    currentAD: 0
-    currentHealth: 0
+    AS:
+      Base:
+        Value: 0
+      Flat: 0
+      Percent: 0
+      Actual: 0
+      Interval: 0
+    AD:
+      Base:
+        Value: 0
+      Flat: 0
+      Percent: 0
+      Actual: 0
+    Health:
+      Base:
+        Value: 0
+      Flat: 0
+      Percent: 0
+      Actual: 0
+      current: 0
+    Mana:
+      Base:
+        Value: 0
+      Flat: 0
+      Percent: 0
+      Actual: 0
+      current: 0
+    ManaGain:
+      Base:
+        Value: 0
+      Flat: 0
+      Percent: 0
+      Actual: 0
+    characterName: 
   spriteAttributeChanger: {fileID: 0}
   stadium: {fileID: 0}
   currentAttackCharge: 0
   canCharge: 1
+--- !u!95 &1284411238107365896
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2325204272237300691}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -11,7 +11,13 @@ public class BaseCharacterStats : ScriptableObject
     public string CharacterName;
     // Temnp
     public Sprite sprite;
+    public RuntimeAnimatorController animator;
 
+    // Ability
+    public Ability Ability;
+    
+    
+    // Stats
     public BaseStat AD;
 
     public float AttackWindup;
