@@ -59,6 +59,7 @@ public class UICharacterBattleStatus : MonoBehaviour
     }
     public void UpdateUI()
     {
+        Setup();
         sliderHealth.value = runtimeCharacterStats.Health.Current;
         sliderMana.value = runtimeCharacterStats.Mana.Current;
         sliderAS.value = character.currentAttackCharge;

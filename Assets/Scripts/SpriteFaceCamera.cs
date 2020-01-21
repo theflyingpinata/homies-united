@@ -9,7 +9,7 @@ public class SpriteFaceCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        theCamera = Camera.main;
     }
 
     // Update is called once per frame

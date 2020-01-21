@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Character : MonoBehaviour
 {
@@ -9,8 +10,6 @@ public class Character : MonoBehaviour
     public BaseCharacterStats baseStats;
     public RuntimeCharacterStats runtimeStats;
 
-    public SpriteAttributeChanger spriteAttributeChanger;
-    public Animator animator;
     // Character Events - called during attacks and when hit
     //public CharacterEvents characterEvents;
 
@@ -30,12 +29,6 @@ public class Character : MonoBehaviour
 
         stadium = GameObject.Find("Stadium").GetComponent<Stadium>();
 
-        spriteAttributeChanger = gameObject.GetComponent<SpriteAttributeChanger>();
-        spriteAttributeChanger.ChangeSprites(baseStats.sprite);
-
-        animator = gameObject.GetComponent<Animator>();
-        animator.runtimeAnimatorController = baseStats.animator;
-
         runtimeStats = new RuntimeCharacterStats(baseStats);
         runtimeStats.SetupValues();
 
@@ -45,40 +38,41 @@ public class Character : MonoBehaviour
     // Subscribe the needed methods to the right events
     public void SetupEvents()
     {
-        StopExceptionsWithEvents();
+        //StopExceptionsWithEvents();
 
         //characterEvents.AttackEvent += StartAttackCoroutine;
         HitEvent += TakeDamage;
-        HitEvent += HitAnimation;
 
         StartMoveEvent += DetermineMove;
 
         //RaiseAttackEvent(new AttackEventArgs(null, null));
         //StartAttackWindupEvent += AttackEvent;// RaiseAttackEvent;
-        AttackStartWindupEvent += StartAttackWindupCoroutine;
+        //AttackStartWindupEvent += StartAttackWindupCoroutine;
         //AttackStartWindupEvent += PrintStartAttackWindupEvent;
+        AttackStartWindupEvent += StartAttack;
         AttackStartWindupEvent += DisableCharge;
 
         //AttackEndWindupEvent += PrintEndAttackWindupEvent;
 
         AttackEvent += DoAttack;
         AttackEvent += GainMana;
-        AttackEvent += AttackStartWinddownEvent;
+        //AttackEvent += AttackStartWinddownEvent;
         //AttackEvent += PrintAttackEvent;
-        AttackEvent += StartAttackWinddownCoroutine;
+        //AttackEvent += StartAttackWinddownCoroutine;
 
         //AttackStartWinddownEvent += PrintStartAttackWinddownEvent;
         //AttackEndWinddownEvent += PrintEndAttackWinddownEvent;
         AttackEndWinddownEvent += EnableCharge;
 
 
-        AbilityStartWindupEvent += StartAbilityWindupCoroutine;
+        //AbilityStartWindupEvent += StartAbilityWindupCoroutine;
+        AbilityStartWindupEvent += StartAbility;
         AbilityStartWindupEvent += DisableCharge;
 
         AbilityEvent += DoAbility;
         AbilityEvent += UseMana;
-        AbilityEvent += AbilityStartWinddownEvent;
-        AbilityEvent += StartAbilityWinddownCoroutine;
+        //AbilityEvent += AbilityStartWinddownEvent;
+       // AbilityEvent += StartAbilityWinddownCoroutine;
 
         AbilityEndWinddownEvent += EnableCharge;
     }
@@ -90,16 +84,16 @@ public class Character : MonoBehaviour
 
 
         AttackStartWindupEvent += StopException;
-        AttackEndWindupEvent += StopException;
+        //AttackEndWindupEvent += StopException;
         AttackEvent += StopException;
-        AttackStartWinddownEvent += StopException;
+        //AttackStartWinddownEvent += StopException;
         AttackEndWinddownEvent += StopException;
 
 
         AbilityStartWindupEvent += StopException;
-        AbilityEndWindupEvent += StopException;
+        //AbilityEndWindupEvent += StopException;
         AbilityEvent += StopException;
-        AbilityStartWinddownEvent += StopException;
+        //AbilityStartWinddownEvent += StopException;
         AbilityEndWinddownEvent += StopException;
 
         HitEvent += StopException;
@@ -184,56 +178,61 @@ public class Character : MonoBehaviour
         //Debug.Log("Damage done to \"" + ID + "\": attackEventArgs.Damage");
     }
 
-    public void HitAnimation(AttackEventArgs attackEventArgs)
+    
+    // Kicks off coroutines for times off when attacks should hit and attack should end
+    public void StartAttack(AttackEventArgs attackEventArgs)
     {
-        spriteAttributeChanger.SquashSprite(.5f);
+        StartCoroutine(DelayAttack(attackEventArgs));
+        StartCoroutine(EndAttack(attackEventArgs));
     }
 
-    // Starts up the attack wind up
-    public void StartAttackWindupCoroutine(AttackEventArgs attackEventArgs)
+    IEnumerator DelayAttack(AttackEventArgs attackEventArgs)
     {
-        animator.SetTrigger("Attack");
-        //Debug.Log("StartAttackCoroutine");
-        StartCoroutine(DelayEvent(AttackEndWindupEvent, attackEventArgs, baseStats.AttackWindup));
-        StartCoroutine(DelayEvent(AttackEvent, attackEventArgs, baseStats.AttackWindup));
-        spriteAttributeChanger.FlashColor(Color.black, baseStats.AttackWindup);
+        yield return new WaitForSeconds(baseStats.AttackWindup);
+        AttackOrder(attackEventArgs);
     }
 
-    // Starts up the attack wind down
-    public void StartAttackWinddownCoroutine(AttackEventArgs attackEventArgs)
+    IEnumerator EndAttack(AttackEventArgs attackEventArgs)
     {
-        spriteAttributeChanger.FlashColor(Color.green, baseStats.AttackWinddown);
-        StartCoroutine(DelayEvent(AttackEndWinddownEvent, attackEventArgs, baseStats.AttackWinddown));
-        AttackStartWinddownEvent?.Invoke(attackEventArgs);
-        //Debug.Log("StartAttackCoroutine");
+        yield return new WaitForSeconds(baseStats.AttackWindup + baseStats.AttackWinddown);
+        AttackEndWinddownEvent?.Invoke(attackEventArgs);
     }
 
-
-    // Starts up the abilty wind up
-    public void StartAbilityWindupCoroutine(AttackEventArgs attackEventArgs)
+    // Calls PreAttack, Attack, and PostAttack events so they go in order
+    public void AttackOrder(AttackEventArgs attackEventArgs)
     {
-        //Debug.Log("StartAttackCoroutine");
-        StartCoroutine(DelayEvent(AbilityEndWindupEvent, attackEventArgs, baseStats.AbilityWindup));
-        StartCoroutine(DelayEvent(AbilityEvent, attackEventArgs, baseStats.AbilityWindup));
-        spriteAttributeChanger.FlashColor(Color.yellow, baseStats.AbilityWindup);
+        PreAttackEvent?.Invoke(attackEventArgs);
+        AttackEvent?.Invoke(attackEventArgs);
+        PostAttackEvent?.Invoke(attackEventArgs);
     }
 
-    // Starts up the ability wind down
-    public void StartAbilityWinddownCoroutine(AttackEventArgs attackEventArgs)
+    // Ability
+    // Kicks off coroutines for times off when Ability should hit and attack should end
+    public void StartAbility(AttackEventArgs attackEventArgs)
     {
-        spriteAttributeChanger.FlashColor(Color.cyan, baseStats.AbilityWinddown);
-        StartCoroutine(DelayEvent(AbilityEndWinddownEvent, attackEventArgs, baseStats.AbilityWinddown));
-        AbilityStartWinddownEvent?.Invoke(attackEventArgs);
-        //Debug.Log("StartAttackCoroutine");
+        StartCoroutine(DelayAbility(attackEventArgs));
+        StartCoroutine(EndAbility(attackEventArgs));
     }
 
-    IEnumerator DelayEvent(AttackDelegate deli, AttackEventArgs attackEventArgs, float delay)
+    IEnumerator DelayAbility(AttackEventArgs attackEventArgs)
     {
-        //Debug.Log("Delay Event " + deli.ToString()) ;
-        yield return new WaitForSeconds(delay);
-        deli(attackEventArgs);
+        yield return new WaitForSeconds(baseStats.AbilityWindup);
+        AbilityOrder(attackEventArgs);
     }
 
+    IEnumerator EndAbility(AttackEventArgs attackEventArgs)
+    {
+        yield return new WaitForSeconds(baseStats.AbilityWindup + baseStats.AbilityWinddown);
+        AbilityEndWinddownEvent?.Invoke(attackEventArgs);
+    }
+
+    // Calls PreAbility, Ability, and PostAbility events so they go in order
+    public void AbilityOrder(AttackEventArgs attackEventArgs)
+    {
+        PreAbilityEvent?.Invoke(attackEventArgs);
+        AbilityEvent?.Invoke(attackEventArgs);
+        PostAbilityEvent?.Invoke(attackEventArgs);
+    }
 
 
     // EVENTS
@@ -243,16 +242,20 @@ public class Character : MonoBehaviour
 
     // Attack
     public event AttackDelegate AttackStartWindupEvent;
-    public event AttackDelegate AttackEndWindupEvent;
+    //public event AttackDelegate AttackEndWindupEvent;
+    public event AttackDelegate PreAttackEvent;
     public event AttackDelegate AttackEvent;
-    public event AttackDelegate AttackStartWinddownEvent;
+    public event AttackDelegate PostAttackEvent;
+    //public event AttackDelegate AttackStartWinddownEvent;
     public event AttackDelegate AttackEndWinddownEvent;
 
     // Ability
     public event AttackDelegate AbilityStartWindupEvent;
-    public event AttackDelegate AbilityEndWindupEvent;
+    //public event AttackDelegate AbilityEndWindupEvent;
+    public event AttackDelegate PreAbilityEvent;
     public event AttackDelegate AbilityEvent;
-    public event AttackDelegate AbilityStartWinddownEvent;
+    public event AttackDelegate PostAbilityEvent;
+    //public event AttackDelegate AbilityStartWinddownEvent;
     public event AttackDelegate AbilityEndWinddownEvent;
 
     public event AttackDelegate HitEvent;
