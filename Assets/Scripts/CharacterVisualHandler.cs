@@ -29,8 +29,8 @@ public class CharacterVisualHandler : MonoBehaviour
 
             character.AttackStartWindupEvent += AttackAnimation;
             character.PostAttackEvent += EndAttackAnimation;
-            character.AbilityStartWindupEvent += AttackAnimation;
-            character.PostAbilityEvent += EndAttackAnimation;
+            character.AbilityStartWindupEvent += AbilityAnimation;
+            character.PostAbilityEvent += EndAbilityAnimation;
             character.HitEvent += HitAnimation;
         }
     }
@@ -54,7 +54,17 @@ public class CharacterVisualHandler : MonoBehaviour
         {
             //Debug.Log("Make text");
             GameObject go = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity, transform);
-            go.GetComponent<TextMeshPro>().text = "-" + attackEventArgs.Damage;
+            TextMeshPro tmpro = go.GetComponent<TextMeshPro>();
+            tmpro.text = Mathf.RoundToInt(attackEventArgs.Damage).ToString();
+            switch (attackEventArgs.Type)
+            {
+                case DamageType.Physical:
+                    tmpro.color = new Color(256, 0, 0);
+                    break;
+                case DamageType.Magical:
+                    tmpro.color = new Color(0, 0, 256);
+                    break;
+            }
         }
     }
 
@@ -77,13 +87,13 @@ public class CharacterVisualHandler : MonoBehaviour
     public void AbilityAnimation(AttackEventArgs attackEventArgs)
     {
         //animator.SetTrigger("Attack");
-        spriteAttributeChanger.FlashColor(Color.yellow, character.baseStats.AttackWindup);
+        spriteAttributeChanger.FlashColor(Color.yellow, character.baseStats.AbilityWindup);
     }
 
     // For Testing
     // Changes color of character for end of attack
     public void EndAbilityAnimation(AttackEventArgs attackEventArgs)
     {
-        spriteAttributeChanger.FlashColor(Color.cyan, character.baseStats.AttackWinddown);
+        spriteAttributeChanger.FlashColor(Color.cyan, character.baseStats.AbilityWinddown);
     }
 }

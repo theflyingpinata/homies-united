@@ -8,6 +8,7 @@ public class Fireball_Ability : Ability
     public override void CastAbility(AttackEventArgs attackEventArgs)
     {
         attackEventArgs.Damage = power;
+        attackEventArgs.Type = DamageType.Magical;
         attackEventArgs.Target.RaiseHitEvent(attackEventArgs);
     }
 }

@@ -6,11 +6,13 @@ using TMPro;
 
 public class UICharacterBattleStatus : MonoBehaviour
 {
+    [Header("Character Stuff")]
     // Stats
+    public string characterToDisplay;
     public Character character;
     public RuntimeCharacterStats runtimeCharacterStats;
 
-
+    [Header("UI Elements")]
     // UI Elements
     public TextMeshProUGUI text;
     public Image imagePortrait;
@@ -18,17 +20,24 @@ public class UICharacterBattleStatus : MonoBehaviour
     public Slider sliderMana;
     public Slider sliderAS;
 
+    [Header("More Info")]
+    // More info
+    public GameObject moreInfoPrefab;
+    public bool moreInfoDisplaying = false;
+    public GameObject moreInfoGO;
+
     // Start is called before the first frame update
     void Start()
     {
-        runtimeCharacterStats = character.runtimeStats;
+        character = GameObject.Find(characterToDisplay).GetComponentInChildren<Character>();
+        //runtimeCharacterStats = character.runtimeStats;
         //Setup();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(runtimeCharacterStats != null && runtimeCharacterStats.characterName != "")
+        if(character != null && runtimeCharacterStats != null && runtimeCharacterStats.characterName != "")
         {
             // test
             /*
@@ -39,9 +48,12 @@ public class UICharacterBattleStatus : MonoBehaviour
         }
         else
         {
+            character = GameObject.Find(characterToDisplay).GetComponentInChildren<Character>();
             runtimeCharacterStats = character.runtimeStats;
+            //Debug.Log(runtimeCharacterStats.characterName);
             Setup();
         }
+
     }
 
     // Sets the parts of the UI that are static
@@ -59,9 +71,24 @@ public class UICharacterBattleStatus : MonoBehaviour
     }
     public void UpdateUI()
     {
-        Setup();
+        //Setup();
         sliderHealth.value = runtimeCharacterStats.Health.Current;
         sliderMana.value = runtimeCharacterStats.Mana.Current;
         sliderAS.value = character.currentAttackCharge;
+    }
+
+    public void DisplayMoreInfo()
+    {
+        Debug.Log("Display More Info has been called");
+        if(!moreInfoDisplaying)
+        {
+            moreInfoGO = Instantiate(moreInfoPrefab, transform.position + new Vector3(imagePortrait.rectTransform.rect.width / 2, imagePortrait.rectTransform.rect.height, 0), Quaternion.identity, transform);
+            Debug.Log("Flexible Width/2: " + imagePortrait.rectTransform.rect.width / 2 + "  Height/2: " + imagePortrait.rectTransform.rect.height / 2);
+        }
+        else
+        {
+            GameObject.Destroy(moreInfoGO);
+        }
+        moreInfoDisplaying = !moreInfoDisplaying;
     }
 }

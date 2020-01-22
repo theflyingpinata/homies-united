@@ -43,7 +43,7 @@ public class Character : MonoBehaviour
         //characterEvents.AttackEvent += StartAttackCoroutine;
         HitEvent += TakeDamage;
 
-        StartMoveEvent += DetermineMove;
+        //StartMoveEvent += DetermineMove;
 
         //RaiseAttackEvent(new AttackEventArgs(null, null));
         //StartAttackWindupEvent += AttackEvent;// RaiseAttackEvent;
@@ -113,19 +113,28 @@ public class Character : MonoBehaviour
     {
         if (canCharge)
         {
-            currentAttackCharge += Time.deltaTime;
-        }
+            // If the chartacer has enough mana to cast their abilty, cast it
+            if (runtimeStats.Mana.Actual == runtimeStats.Mana.Current)
+            {
+                AttackEventArgs newAttack = new AttackEventArgs(this, stadium.GetCharacterOtherSide(this));
+                AbilityStartWindupEvent?.Invoke(newAttack);
+            }
+            // IF they dont have enough mana, do a normal attack
+            else
+            {
+                currentAttackCharge += Time.deltaTime;
 
-        if (currentAttackCharge >= runtimeStats.AS.Interval)
-        {
-            currentAttackCharge -= runtimeStats.AS.Interval;
-            AttackEventArgs newAttack = new AttackEventArgs(this, stadium.GetCharacterOtherSide(this));
-            StartMoveEvent(newAttack);
-
-
+                if (currentAttackCharge >= runtimeStats.AS.Interval)
+                {
+                    currentAttackCharge -= runtimeStats.AS.Interval;
+                    AttackEventArgs newAttack = new AttackEventArgs(this, stadium.GetCharacterOtherSide(this));
+                    AttackStartWindupEvent?.Invoke(newAttack);
+                }
+            }
         }
     }
 
+    /*
     // Determines to start an attack or an ability
     public void DetermineMove(AttackEventArgs attackEventArgs)
     {
@@ -140,7 +149,7 @@ public class Character : MonoBehaviour
             AttackStartWindupEvent(attackEventArgs);
         }
     }
-
+    */
     // Does a normal attack
     public void DoAttack(AttackEventArgs attackEventArgs)
     {

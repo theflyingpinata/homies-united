@@ -18,12 +18,13 @@ public class BaseCharacterStats : ScriptableObject
     
     
     // Stats
-    public BaseStat AD;
 
     public float AttackWindup;
     public float AttackWinddown;
     public float AbilityWindup;
     public float AbilityWinddown;
+
+    public BaseStat AD;
 
     public BaseStat AS;
 
